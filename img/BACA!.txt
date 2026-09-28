@@ -1,0 +1,18 @@
+📁 public_html/aplikasi/
+├── index.html
+│
+├── 📁 video/              ← taruh file video promosi di sini
+│   ├── sinoqi-nex.mp4
+│   ├── geprek-nih.mp4
+│   ├── warung-sinon.mp4
+│   └── sinon-cloud.mp4
+│
+└── 📁 img/                ← taruh screenshot/foto di sini
+    ├── sinoqi-nex-1.png
+    ├── sinoqi-nex-2.png
+    ├── geprek-nih-1.png
+    ├── geprek-nih-2.png
+    ├── warung-sinon-1.png
+    ├── warung-sinon-2.png
+    ├── sinon-cloud-1.png
+    └── sinon-cloud-2.png
