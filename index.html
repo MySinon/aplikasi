@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Aplikasi — My Sinon 🚀</title>
+<title>Aplikasi — My Sinon</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Orbitron:wght@500;900&family=Yuji+Syuku&display=swap" rel="stylesheet" />
 
@@ -134,6 +134,10 @@ body::after {
   background: rgba(236, 72, 153, 0.2);
   box-shadow: 0 0 20px rgba(236, 72, 153, 0.5);
   transform: translateX(-3px);
+}
+.back-btn svg {
+  width: 14px;
+  height: 14px;
 }
 .logo {
   font-family: 'Yuji Syuku', serif;
@@ -280,7 +284,6 @@ body::after {
   box-shadow: 0 20px 50px rgba(236, 72, 153, 0.3),
               0 0 60px rgba(124, 58, 237, 0.2);
 }
-/* Card untuk app yang unlocked (bisa diakses) */
 .app-card.is-live {
   border-color: rgba(74, 222, 128, 0.4);
 }
@@ -290,6 +293,7 @@ body::after {
               0 0 60px rgba(6, 182, 212, 0.25);
 }
 
+/* Preview: single image */
 .app-preview {
   position: relative;
   width: 100%;
@@ -313,6 +317,39 @@ body::after {
       rgba(168, 85, 247, 0.06) 0 12px,
       rgba(236, 72, 153, 0.06) 12px 24px);
   z-index: 1;
+}
+.app-preview img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 2;
+}
+.app-preview .preview-emoji {
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.5));
+}
+
+/* Locked state on card preview */
+.app-card.is-locked .app-preview img,
+.app-card.is-locked .app-preview .preview-emoji {
+  filter: blur(10px) brightness(0.4) saturate(1.3);
+  transform: scale(1.1);
+  transition: filter 0.4s;
+}
+.preview-lock {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  font-size: 2.2rem;
+  filter: drop-shadow(0 0 18px var(--gold));
+  pointer-events: none;
 }
 
 .app-info {
@@ -352,10 +389,6 @@ body::after {
   color: var(--text-dim);
   letter-spacing: 0.3px;
 }
-.app-dev .star-icon {
-  color: var(--gold);
-  text-shadow: 0 0 8px var(--gold);
-}
 
 .app-short {
   color: var(--text-dim);
@@ -382,7 +415,6 @@ body::after {
   letter-spacing: 0.5px;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
 }
 .app-status-badge.stable {
   background: rgba(74, 222, 128, 0.15);
@@ -497,160 +529,51 @@ body::after {
   box-shadow: 0 0 25px var(--pink);
 }
 
-/* =========================================================
-   CAROUSEL
-   ========================================================= */
-.carousel-wrap {
+/* Modal single image */
+.modal-image {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border-radius: 22px 22px 0 0;
-  background: #1a0f2e;
-}
-
-.carousel-track {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
-  will-change: transform;
-}
-
-.carousel-slide {
-  flex: 0 0 100%;
-  width: 100%;
-  height: 100%;
-  position: relative;
+  background: linear-gradient(135deg, #1a0f2e, #2a1a45);
+  border-bottom: 1px solid rgba(236, 72, 153, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  font-size: 5rem;
+}
+.modal-image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
   background:
     repeating-linear-gradient(45deg,
-      rgba(168, 85, 247, 0.06) 0 14px,
-      rgba(236, 72, 153, 0.06) 14px 28px);
+      rgba(168, 85, 247, 0.06) 0 16px,
+      rgba(236, 72, 153, 0.06) 16px 32px);
+  z-index: 1;
 }
-
-.carousel-slide video,
-.carousel-slide img,
-.carousel-slide .slide-fallback {
+.modal-image img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  z-index: 2;
+}
+.modal-image .modal-image-emoji {
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 10px 28px rgba(0, 0, 0, 0.55));
 }
 
-.carousel-slide .slide-fallback {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 4rem;
-  color: var(--text-dim);
-  background:
-    repeating-linear-gradient(45deg,
-      rgba(168, 85, 247, 0.08) 0 14px,
-      rgba(236, 72, 153, 0.08) 14px 28px);
-}
-.carousel-slide .slide-fallback p {
-  font-size: 0.8rem;
-  letter-spacing: 4px;
-  margin-top: 8px;
-  color: var(--text-dim);
-}
-
-/* Locked effect */
-.carousel-wrap.locked .carousel-slide video,
-.carousel-wrap.locked .carousel-slide img,
-.carousel-wrap.locked .carousel-slide .slide-fallback {
+/* Locked state on modal image */
+.modal-image.locked img,
+.modal-image.locked .modal-image-emoji {
   filter: blur(14px) brightness(0.35) saturate(1.5);
   transform: scale(1.08);
   transition: filter 0.4s;
-}
-.carousel-wrap.locked:hover .carousel-slide video,
-.carousel-wrap.locked:hover .carousel-slide img,
-.carousel-wrap.locked:hover .carousel-slide .slide-fallback {
-  filter: blur(18px) brightness(0.3) saturate(1.7);
-}
-
-.carousel-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 1px solid rgba(236, 72, 153, 0.6);
-  background: rgba(20, 10, 35, 0.75);
-  color: var(--sakura);
-  font-size: 1.5rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: grid;
-  place-items: center;
-  z-index: 15;
-  transition: all 0.3s;
-  backdrop-filter: blur(10px);
-  line-height: 1;
-  padding-bottom: 3px;
-}
-.carousel-nav:hover {
-  background: var(--pink);
-  color: #fff;
-  box-shadow: 0 0 25px var(--pink);
-  transform: translateY(-50%) scale(1.1);
-}
-.carousel-nav.prev { left: 12px; }
-.carousel-nav.next { right: 12px; }
-
-.carousel-dots {
-  position: absolute;
-  bottom: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 8px;
-  z-index: 15;
-  padding: 6px 12px;
-  background: rgba(20, 10, 35, 0.65);
-  border-radius: 50px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(236, 72, 153, 0.3);
-}
-.carousel-dots .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(232, 216, 255, 0.3);
-  cursor: pointer;
-  transition: all 0.3s;
-  border: none;
-  padding: 0;
-}
-.carousel-dots .dot.active {
-  background: var(--pink);
-  width: 24px;
-  border-radius: 50px;
-  box-shadow: 0 0 12px var(--pink);
-}
-.carousel-dots .dot:hover { background: var(--sakura); }
-
-.carousel-counter {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  padding: 5px 12px;
-  background: rgba(20, 10, 35, 0.75);
-  border: 1px solid rgba(236, 72, 153, 0.4);
-  border-radius: 50px;
-  color: var(--sakura);
-  font-family: 'Orbitron', sans-serif;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  z-index: 15;
-  backdrop-filter: blur(10px);
 }
 
 .lock-overlay {
@@ -666,13 +589,7 @@ body::after {
 .lock-icon {
   font-size: 3.5rem;
   filter: drop-shadow(0 0 20px var(--gold));
-  animation: lockShake 3s ease-in-out infinite;
   margin-bottom: 8px;
-}
-@keyframes lockShake {
-  0%, 90%, 100% { transform: rotate(0deg); }
-  93%           { transform: rotate(-8deg); }
-  96%           { transform: rotate(8deg); }
 }
 .lock-text {
   font-family: 'Orbitron', sans-serif;
@@ -688,24 +605,6 @@ body::after {
   font-size: 0.78rem;
   color: var(--text-dim);
   letter-spacing: 2px;
-}
-
-.swipe-hint {
-  position: absolute;
-  bottom: 55px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.7rem;
-  color: var(--sakura);
-  opacity: 0.6;
-  letter-spacing: 2px;
-  z-index: 15;
-  animation: swipePulse 2s ease-in-out infinite;
-  pointer-events: none;
-}
-@keyframes swipePulse {
-  0%, 100% { opacity: 0.3; transform: translateX(-50%) translateY(0); }
-  50%      { opacity: 0.8; transform: translateX(-50%) translateY(-3px); }
 }
 
 /* =========================================================
@@ -773,6 +672,8 @@ body::after {
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
 }
 .modal-status.stable {
   background: rgba(74, 222, 128, 0.15);
@@ -818,9 +719,9 @@ body::after {
   color: var(--sakura);
   text-shadow: 0 0 10px rgba(232, 216, 255, 0.4);
 }
-.stat-value .star-icon {
-  color: var(--gold);
-  text-shadow: 0 0 8px var(--gold);
+.stat-value.accent {
+  color: #f472b6;
+  text-shadow: 0 0 12px rgba(244, 114, 182, 0.5);
 }
 
 .modal-section-title {
@@ -831,14 +732,6 @@ body::after {
   color: var(--cyan);
   margin: 22px 0 10px;
   text-shadow: 0 0 12px rgba(6, 182, 212, 0.5);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.modal-section-title::before {
-  content: '▸';
-  color: var(--pink);
-  text-shadow: 0 0 10px var(--pink);
 }
 
 .modal-desc {
@@ -891,7 +784,7 @@ body::after {
   color: #d8b4fe;
 }
 
-/* CTA locked (disabled) */
+/* CTA locked */
 .modal-cta {
   display: block;
   width: 100%;
@@ -907,27 +800,12 @@ body::after {
   letter-spacing: 3px;
   cursor: not-allowed;
   text-align: center;
-  position: relative;
-  overflow: hidden;
   box-shadow: 0 0 25px rgba(212, 175, 55, 0.2),
               inset 0 0 15px rgba(212, 175, 55, 0.1);
   text-decoration: none;
 }
-.modal-cta::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg,
-    transparent, rgba(212, 175, 55, 0.15), transparent);
-  transform: translateX(-100%);
-  animation: shineSweep 3s ease-in-out infinite;
-}
-@keyframes shineSweep {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
 
-/* CTA live (klik) */
+/* CTA live */
 .modal-cta.live {
   border: 2px solid transparent;
   background: var(--gradient-green);
@@ -937,7 +815,6 @@ body::after {
               inset 0 -4px 0 rgba(0,0,0,0.15);
   transition: transform 0.3s, box-shadow 0.3s;
 }
-.modal-cta.live::after { display: none; }
 .modal-cta.live:hover {
   transform: translateY(-3px) scale(1.02);
   box-shadow: 0 0 50px rgba(74, 222, 128, 0.9),
@@ -981,11 +858,9 @@ body::after {
   .modal-features { grid-template-columns: 1fr; }
   .modal-stats { gap: 8px; padding: 12px 0; }
   .stat-value { font-size: 0.85rem; }
-  .carousel-nav { width: 36px; height: 36px; font-size: 1.2rem; }
-  .carousel-nav.prev { left: 8px; }
-  .carousel-nav.next { right: 8px; }
   .lock-icon { font-size: 2.5rem; }
   .lock-text { font-size: 1rem; letter-spacing: 4px; }
+  .modal-image { font-size: 4rem; }
 }
 </style>
 </head>
@@ -994,43 +869,47 @@ body::after {
 <!-- SAKURA -->
 <div id="sakura"></div>
 
-<!-- ============ NAVBAR ============ -->
+<!-- NAVBAR -->
 <nav class="navbar">
-  <a href="https://my-sinon.my.id" class="back-btn">← Kembali</a>
+  <a href="https://my-sinon.my.id" class="back-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    Kembali
+  </a>
   <div class="logo">My<span>Sinon</span></div>
 </nav>
 
-<!-- ============ HERO ============ -->
+<!-- HERO -->
 <header class="hero-page">
   <span class="jp">アプリケーション</span>
   <h1><span class="gradient-text">PLATFORM</span> 🚀</h1>
   <p class="desc">
     Katalog produk digital yang sedang aku bangun. Beberapa sudah bisa diakses,
-    sisanya masih terkunci sampai rilis resmi 🔒✨
+    sisanya masih terkunci sampai rilis resmi.
   </p>
 </header>
 
-<!-- ============ FILTER ============ -->
+<!-- FILTER -->
 <div class="filter-bar" id="filterBar">
-  <button class="filter-btn" data-filter="stable">🟢 Stable</button>
-  <button class="filter-btn active" data-filter="beta">🧪 Beta</button>
-  <button class="filter-btn" data-filter="soon">✨ Soon</button>
+  <button class="filter-btn active" data-filter="all">Semua</button>
+  <button class="filter-btn" data-filter="stable">Stable</button>
+  <button class="filter-btn" data-filter="beta">Beta</button>
+  <button class="filter-btn" data-filter="soon">Soon</button>
 </div>
 
-<!-- ============ APP GRID ============ -->
+<!-- APP GRID -->
 <main class="apps-wrap">
   <div class="apps-grid" id="appsGrid"></div>
 </main>
 
-<!-- ============ MODAL ============ -->
+<!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal" id="modal">
-    <button class="modal-close" onclick="closeModal()">✕</button>
+    <button class="modal-close" onclick="closeModal()" aria-label="Tutup">✕</button>
     <div class="modal-body" id="modalBody"></div>
   </div>
 </div>
 
-<!-- ============ FOOTER ============ -->
+<!-- FOOTER -->
 <footer class="footer">
   <p class="jp">ありがとう ございます</p>
   <p>© 2026 My Sinon — aplikasi.my-sinon.my.id — Made with 💜🌸</p>
@@ -1040,97 +919,26 @@ body::after {
 /* =========================================================
    DATA APLIKASI
    ---------------------------------------------------------
-   FIELD PENTING:
+   - image: URL foto preview (null = pakai gradient fallback)
+   - locked: true = preview diblur + ikon kunci
    - status: 'stable' | 'beta' | 'soon'
-   - locked: true  → preview diblur + 🔒 (belum bisa diakses)
-            false → preview keliatan normal + tombol bisa diklik
-   - link: URL tujuan (wajib isi, meski masih locked)
-   - media: [{ type: 'video'|'image', src: '...' | null }, ...]
    ========================================================= */
 const APPS = [
-  /* ===== BETA ===== */
-  {
-    id: 'sinoqi-nex',
-    icon: '🤖',
-    title: 'Sinoqi Nex',
-    dev: 'My Sinon × Tim',
-    category: 'AI Platform',
-    status: 'beta',
-    locked: false,                       // ← unlocked, bisa diklik
-    version: 'v0.3.0-beta',
-    platform: 'Web',
-    rating: '★ 5.0',
-    link: 'https://nex.my-sinon.my.id',  // ← GANTI dengan link Sinoqi Nex kamu
-    media: [
-      { type: 'video', src: null },
-      { type: 'image', src: null },
-      { type: 'image', src: null }
-    ],
-    short: 'Platform AI pribadi — chatbot pintar & tools AI untuk produktivitas harian.',
-    desc: 'Sinoqi Nex adalah platform berbasis AI yang menyediakan chatbot pintar, tools AI untuk membantu produktivitas, dan integrasi dengan berbagai layanan digital. Sekarang dalam tahap beta dan sudah bisa diakses.',
-    features: [
-      { emoji: '💬', text: 'Chatbot pintar multi-bahasa' },
-      { emoji: '🧠', text: 'Model AI terlatih custom' },
-      { emoji: '⚡', text: 'Respon cepat & akurat' },
-      { emoji: '🔌', text: 'API integrasi' },
-      { emoji: '🎨', text: 'Generate gambar & teks' },
-      { emoji: '📈', text: 'Analisis data otomatis' }
-    ],
-    tech: ['AI/ML', 'Python', 'API'],
-    statusText: 'Tahap uji coba publik',
-    statusLabel: '🧪 Beta'
-  },
-  {
-    id: 'geprek-nih',
-    icon: '🍗',
-    title: 'Geprek Nih!',
-    dev: 'My Sinon × Tim',
-    category: 'Food & Beverage',
-    status: 'beta',
-    locked: false,                       // ← unlocked, bisa diklik
-    version: 'v0.1.0-beta',
-    platform: 'Web',
-    rating: '—',
-    link: 'https://geprek.my-sinon.my.id', // ← GANTI dengan link Geprek Nih! kamu
-    media: [
-      { type: 'video', src: null },
-      { type: 'image', src: null },
-      { type: 'image', src: null }
-    ],
-    short: 'Aplikasi pemesanan geprek & makanan pedas — order online langsung dari HP.',
-    desc: 'Geprek Nih! adalah aplikasi pemesanan makanan (khususnya geprek & menu pedas) yang memudahkan pelanggan untuk order langsung dari HP. Dilengkapi menu digital, keranjang, dan sistem pengiriman sederhana. Masih dalam tahap beta.',
-    features: [
-      { emoji: '🍗', text: 'Menu digital interaktif' },
-      { emoji: '🛒', text: 'Order langsung dari HP' },
-      { emoji: '🛵', text: 'Sistem delivery sederhana' },
-      { emoji: '📍', text: 'Lokasi & tracking pesanan' },
-      { emoji: '💳', text: 'Pembayaran digital' },
-      { emoji: '⭐', text: 'Rating & review menu' }
-    ],
-    tech: ['Web App', 'F&B', 'Realtime'],
-    statusText: 'Tahap uji coba',
-    statusLabel: '🧪 Beta'
-  },
-
-  /* ===== SOON ===== */
+  /* STABLE */
   {
     id: 'warung-sinon',
     icon: '🏪',
     title: 'Warung Sinon',
     dev: 'My Sinon',
     category: 'E-Commerce',
-    status: 'soon',
-    locked: true,                        // ← locked walau udah ada link
-    version: 'v0.1.0',
+    status: 'stable',
+    locked: false,
+    version: 'v0.6',
     platform: 'Web',
-    rating: '—',
-    link: 'https://warung.my-sinon.my.id', // ← GANTI dengan link Warung Sinon kamu
-    media: [
-      { type: 'video', src: null },
-      { type: 'image', src: null },
-      { type: 'image', src: null }
-    ],
-    short: 'Warung digital dengan sistem order & keranjang belanja — cocok buat jualan produk lokal.',
+    access: 'Publik',
+    link: 'https://warungsinon.my.id',
+    image: 'img/WS.jpg',
+    short: 'Warung digital dengan sistem order dan keranjang belanja untuk produk lokal.',
     desc: 'Warung Sinon adalah platform toko online yang dirancang untuk memudahkan UMKM dan penjual produk lokal dalam berjualan secara digital. Dilengkapi sistem order real-time, keranjang belanja, dan manajemen stok sederhana.',
     features: [
       { emoji: '🛒', text: 'Keranjang belanja interaktif' },
@@ -1141,8 +949,66 @@ const APPS = [
       { emoji: '📱', text: 'Tampilan responsive mobile' }
     ],
     tech: ['Web App', 'E-Commerce', 'Realtime'],
+    statusText: 'Tersedia untuk publik',
+    statusLabel: 'Stable'
+  },
+
+  /* BETA */
+  {
+    id: 'sinoqi-nex',
+    icon: '🤖',
+    title: 'Sinoqi Nex',
+    dev: 'My Sinon',
+    category: 'AI Platform',
+    status: 'beta',
+    locked: false,
+    version: 'v0.3-Nex',
+    platform: 'Web',
+    access: 'Publik',
+    link: 'https://sinoqi-nex.vercel.app/',
+    image: 'img/SI.jpg',
+    short: 'Platform AI pribadi dengan chatbot pintar dan tools AI untuk produktivitas harian.',
+    desc: 'Sinoqi Nex adalah platform berbasis AI yang menyediakan chatbot pintar, tools AI untuk membantu produktivitas, dan integrasi dengan berbagai layanan digital. Saat ini dalam tahap uji coba publik.',
+    features: [
+      { emoji: '💬', text: 'Chatbot pintar multi-bahasa' },
+      { emoji: '🧠', text: 'Model AI terlatih custom' },
+      { emoji: '⚡', text: 'Respon cepat & akurat' },
+      { emoji: '🔌', text: 'API integrasi' },
+      { emoji: '🎨', text: 'Generate gambar & teks' },
+      { emoji: '📈', text: 'Analisis data otomatis' }
+    ],
+    tech: ['AI/ML', 'Python', 'API'],
+    statusText: 'Tahap uji coba publik',
+    statusLabel: 'Beta'
+  },
+
+  /* SOON */
+  {
+    id: 'geprek-nih',
+    icon: '🍗',
+    title: 'Geprek Nih',
+    dev: 'My Sinon',
+    category: 'Food & Beverage',
+    status: 'soon',
+    locked: true,
+    version: 'v0.1.0',
+    platform: 'Web',
+    access: 'Terbatas',
+    link: 'https://geprek.my-sinon.my.id',
+    image: null,
+    short: 'Aplikasi pemesanan geprek dan makanan pedas, order online dari perangkat.',
+    desc: 'Geprek Nih adalah aplikasi pemesanan makanan (khususnya geprek dan menu pedas) yang memudahkan pelanggan untuk order langsung dari perangkat. Dilengkapi menu digital, keranjang, dan sistem pengiriman sederhana.',
+    features: [
+      { emoji: '🍗', text: 'Menu digital interaktif' },
+      { emoji: '🛒', text: 'Order langsung dari perangkat' },
+      { emoji: '🛵', text: 'Sistem delivery sederhana' },
+      { emoji: '📍', text: 'Lokasi & tracking pesanan' },
+      { emoji: '💳', text: 'Pembayaran digital' },
+      { emoji: '⭐', text: 'Rating & review menu' }
+    ],
+    tech: ['Web App', 'F&B', 'Realtime'],
     statusText: 'Segera rilis',
-    statusLabel: '✨ Coming Soon'
+    statusLabel: 'Soon'
   },
   {
     id: 'sinon-cloud',
@@ -1151,18 +1017,14 @@ const APPS = [
     dev: 'My Sinon',
     category: 'Cloud Service',
     status: 'soon',
-    locked: true,                        // ← locked walau udah ada link
+    locked: true,
     version: 'v0.0.1',
     platform: 'Web',
-    rating: '—',
-    link: 'https://cloud.my-sinon.my.id', // ← GANTI dengan link Sinon Cloud kamu
-    media: [
-      { type: 'video', src: null },
-      { type: 'image', src: null },
-      { type: 'image', src: null }
-    ],
-    short: 'Layanan cloud storage & hosting mini pribadi — dibuat untuk eksperimen server sendiri.',
-    desc: 'Sinon Cloud adalah proyek layanan cloud pribadi yang sedang dirancang. Berfungsi sebagai penyimpanan file, hosting mini, dan playground untuk eksperimen server & infrastruktur. Terinspirasi dari pengalaman bikin server fisik dari HP Android.',
+    access: 'Terbatas',
+    link: 'https://cloud.my-sinon.my.id',
+    image: null,
+    short: 'Layanan cloud storage dan hosting mini pribadi untuk eksperimen server sendiri.',
+    desc: 'Sinon Cloud adalah proyek layanan cloud pribadi yang sedang dirancang. Berfungsi sebagai penyimpanan file, hosting mini, dan playground untuk eksperimen server dan infrastruktur.',
     features: [
       { emoji: '💾', text: 'Cloud storage pribadi' },
       { emoji: '🌐', text: 'Hosting mini untuk project' },
@@ -1173,7 +1035,7 @@ const APPS = [
     ],
     tech: ['Cloud', 'Server', 'DevOps'],
     statusText: 'Segera rilis',
-    statusLabel: '✨ Coming Soon'
+    statusLabel: 'Soon'
   }
 ];
 
@@ -1182,42 +1044,41 @@ const APPS = [
    ========================================================= */
 const grid = document.getElementById('appsGrid');
 
-function statusLabel(s) {
-  if (s === 'stable') return '🟢 Stable';
-  if (s === 'beta') return '🧪 Beta';
-  return '✨ Soon';
-}
-
-function renderApps(filter = 'beta') {
+function renderApps(filter = 'all') {
   grid.innerHTML = '';
-  const filtered = filter === 'all'
-    ? APPS
-    : APPS.filter(a => a.status === filter);
+  const filtered = filter === 'all' ? APPS : APPS.filter(a => a.status === filter);
 
   if (filtered.length === 0) {
-    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-dim); padding: 40px;">Belum ada aplikasi di kategori ini 🌸</p>';
+    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-dim); padding: 40px;">Belum ada aplikasi di kategori ini.</p>';
     return;
   }
 
   filtered.forEach((a, i) => {
     const card = document.createElement('div');
-    card.className = 'app-card' + (a.locked === false ? ' is-live' : '');
+    card.className = 'app-card ' + (a.locked ? 'is-locked' : 'is-live');
     card.style.animationDelay = (i * 0.1) + 's';
     card.dataset.id = a.id;
 
+    const previewHTML = a.image
+      ? `<img src="${a.image}" alt="${a.title}" loading="lazy" onerror="this.outerHTML='<span class=&quot;preview-emoji&quot;>${a.icon}</span>'">`
+      : `<span class="preview-emoji">${a.icon}</span>`;
+
     card.innerHTML = `
-      <div class="app-preview">${a.icon}</div>
+      <div class="app-preview">
+        ${previewHTML}
+        ${a.locked ? '<div class="preview-lock">🔒</div>' : ''}
+      </div>
       <div class="app-info">
         <div class="app-icon-big">${a.icon}</div>
         <div style="flex:1;min-width:0;">
           <div class="app-name">${a.title}</div>
-          <div class="app-dev"><span class="star-icon">★</span> ${a.dev} • ${a.category}</div>
+          <div class="app-dev">${a.dev} / ${a.category}</div>
         </div>
       </div>
       <p class="app-short">${a.short}</p>
       <div class="app-bottom">
-        <span class="app-status-badge ${a.status}">${statusLabel(a.status)}</span>
-        <span class="app-cta">${a.locked === false ? 'Kunjungi →' : 'Lihat Detail →'}</span>
+        <span class="app-status-badge ${a.status}">${a.statusLabel}</span>
+        <span class="app-cta">${a.locked ? 'Lihat Detail' : 'Kunjungi'}</span>
       </div>
     `;
 
@@ -1238,121 +1099,6 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
 });
 
 /* =========================================================
-   CAROUSEL STATE
-   ========================================================= */
-const carousel = {
-  current: 0,
-  total: 0,
-  track: null,
-  dots: []
-};
-
-function buildSlides(media) {
-  return media.map((m, i) => {
-    if (m.type === 'video') {
-      const inner = m.src
-        ? `<video src="${m.src}" muted loop playsinline preload="metadata"></video>`
-        : `<div class="slide-fallback"><span>🎬</span><p>PROMO VIDEO</p></div>`;
-      return `<div class="carousel-slide" data-index="${i}">${inner}</div>`;
-    }
-    const inner = m.src
-      ? `<img src="${m.src}" alt="Preview ${i}" onerror="this.outerHTML='<div class=&quot;slide-fallback&quot;><span>🖼️</span><p>SCREENSHOT</p></div>'">`
-      : `<div class="slide-fallback"><span>🖼️</span><p>SCREENSHOT</p></div>`;
-    return `<div class="carousel-slide" data-index="${i}">${inner}</div>`;
-  }).join('');
-}
-
-function buildDots(media) {
-  return media.map((_, i) =>
-    `<button class="dot ${i === 0 ? 'active' : ''}" data-slide="${i}" aria-label="Slide ${i+1}"></button>`
-  ).join('');
-}
-
-function goToSlide(n) {
-  if (!carousel.track) return;
-  const total = carousel.total;
-  carousel.current = ((n % total) + total) % total;
-
-  carousel.track.style.transform = `translateX(-${carousel.current * 100}%)`;
-
-  carousel.dots.forEach((d, i) => {
-    d.classList.toggle('active', i === carousel.current);
-  });
-
-  const counter = document.querySelector('.carousel-counter .current');
-  if (counter) counter.textContent = carousel.current + 1;
-
-  const slides = carousel.track.querySelectorAll('.carousel-slide');
-  slides.forEach((s, i) => {
-    const v = s.querySelector('video');
-    if (!v) return;
-    if (i === carousel.current) v.play().catch(() => {});
-    else v.pause();
-  });
-}
-
-function initCarousel() {
-  carousel.track = document.getElementById('carouselTrack');
-  carousel.dots = Array.from(document.querySelectorAll('#carouselDots .dot'));
-  carousel.current = 0;
-  carousel.total = carousel.track ? carousel.track.querySelectorAll('.carousel-slide').length : 0;
-
-  document.getElementById('carouselPrev')?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    goToSlide(carousel.current - 1);
-  });
-  document.getElementById('carouselNext')?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    goToSlide(carousel.current + 1);
-  });
-
-  carousel.dots.forEach(dot => {
-    dot.addEventListener('click', (e) => {
-      e.stopPropagation();
-      goToSlide(parseInt(dot.dataset.slide, 10));
-    });
-  });
-
-  let touchStartX = 0;
-  let touchStartY = 0;
-  let isSwiping = false;
-
-  carousel.track?.addEventListener('touchstart', (e) => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-    isSwiping = false;
-  }, { passive: true });
-
-  carousel.track?.addEventListener('touchmove', (e) => {
-    const dx = e.touches[0].clientX - touchStartX;
-    const dy = e.touches[0].clientY - touchStartY;
-    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) isSwiping = true;
-  }, { passive: true });
-
-  carousel.track?.addEventListener('touchend', (e) => {
-    if (!isSwiping) return;
-    const diff = e.changedTouches[0].clientX - touchStartX;
-    if (diff > 50) goToSlide(carousel.current - 1);
-    else if (diff < -50) goToSlide(carousel.current + 1);
-  });
-
-  goToSlide(0);
-}
-
-document.addEventListener('keydown', (e) => {
-  if (!overlay.classList.contains('active')) return;
-  if (!carousel.track) return;
-  if (e.key === 'ArrowLeft') {
-    e.preventDefault();
-    goToSlide(carousel.current - 1);
-  }
-  if (e.key === 'ArrowRight') {
-    e.preventDefault();
-    goToSlide(carousel.current + 1);
-  }
-});
-
-/* =========================================================
    MODAL
    ========================================================= */
 const overlay = document.getElementById('modalOverlay');
@@ -1362,9 +1108,11 @@ function openModal(id) {
   const a = APPS.find(x => x.id === id);
   if (!a) return;
 
-  const slidesHTML = buildSlides(a.media);
-  const dotsHTML = buildDots(a.media);
   const isLocked = a.locked === true;
+
+  const imageHTML = a.image
+    ? `<img src="${a.image}" alt="${a.title}" onerror="this.outerHTML='<span class=&quot;modal-image-emoji&quot;>${a.icon}</span>'">`
+    : `<span class="modal-image-emoji">${a.icon}</span>`;
 
   const lockOverlayHTML = isLocked
     ? `<div class="lock-overlay">
@@ -1375,24 +1123,12 @@ function openModal(id) {
     : '';
 
   const ctaHTML = isLocked
-    ? `<button class="modal-cta" disabled>🔒 BELUM RILIS</button>`
-    : `<a class="modal-cta live" href="${a.link || '#'}" target="_blank" rel="noopener">🚀 KUNJUNGI SEKARANG</a>`;
+    ? `<button class="modal-cta" disabled>BELUM RILIS</button>`
+    : `<a class="modal-cta live" href="${a.link || '#'}" target="_blank" rel="noopener">BUKA APLIKASI</a>`;
 
   modalBody.innerHTML = `
-    <div class="carousel-wrap ${isLocked ? 'locked' : ''}">
-      <div class="carousel-track" id="carouselTrack">${slidesHTML}</div>
-
-      <button class="carousel-nav prev" id="carouselPrev" aria-label="Sebelumnya">‹</button>
-      <button class="carousel-nav next" id="carouselNext" aria-label="Berikutnya">›</button>
-
-      <div class="carousel-counter">
-        <span class="current">1</span> / ${a.media.length}
-      </div>
-
-      <div class="carousel-dots" id="carouselDots">${dotsHTML}</div>
-
-      <div class="swipe-hint">◀ GESER ▶</div>
-
+    <div class="modal-image ${isLocked ? 'locked' : ''}">
+      ${imageHTML}
       ${lockOverlayHTML}
     </div>
 
@@ -1401,10 +1137,9 @@ function openModal(id) {
         <div class="modal-icon-big ${a.locked === false ? 'live' : ''}">${a.icon}</div>
         <div class="modal-title-wrap">
           <div class="modal-title">${a.title}</div>
-          <div class="modal-dev"><span class="star-icon">★</span> ${a.dev}</div>
+          <div class="modal-dev">${a.dev} / ${a.category}</div>
           <div class="modal-meta-row">
             <span class="modal-status ${a.status}">${a.statusLabel}</span>
-            <span class="modal-cat">• ${a.category}</span>
           </div>
         </div>
       </div>
@@ -1419,8 +1154,8 @@ function openModal(id) {
           <div class="stat-value">${a.platform}</div>
         </div>
         <div class="stat-item">
-          <div class="stat-label">Rating</div>
-          <div class="stat-value">${a.rating}</div>
+          <div class="stat-label">Akses</div>
+          <div class="stat-value ${a.locked === false ? 'accent' : ''}">${a.access}</div>
         </div>
       </div>
 
@@ -1437,7 +1172,7 @@ function openModal(id) {
         `).join('')}
       </div>
 
-      <h3 class="modal-section-title">Kategori</h3>
+      <h3 class="modal-section-title">Teknologi</h3>
       <div class="modal-tag-list">
         ${a.tech.map(t => `<span class="modal-tag">${t}</span>`).join('')}
       </div>
@@ -1448,17 +1183,11 @@ function openModal(id) {
 
   overlay.classList.add('active');
   document.body.style.overflow = 'hidden';
-
-  requestAnimationFrame(() => initCarousel());
 }
 
 function closeModal() {
   overlay.classList.remove('active');
   document.body.style.overflow = '';
-  modalBody.querySelectorAll('video').forEach(v => v.pause());
-  carousel.track = null;
-  carousel.dots = [];
-  carousel.current = 0;
 }
 
 overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
@@ -1490,7 +1219,7 @@ document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal
 /* =========================================================
    INIT
    ========================================================= */
-renderApps('beta'); // default tampil yang Beta
+renderApps('all');
 </script>
 </body>
 </html>
